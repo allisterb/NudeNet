@@ -18,23 +18,23 @@ class Classifier:
 
     nsfw_model = None
 
-    def __init__(self):
+    def __init__(self, model_dir):
         """
         model = Classifier()
         """
-        url = "https://github.com/notAI-tech/NudeNet/releases/download/v0/classifier_model.onnx"
-        home = os.path.expanduser("~")
-        model_folder = os.path.join(home, ".NudeNet/")
-        if not os.path.exists(model_folder):
-            os.mkdir(model_folder)
+        #url = "https://github.com/notAI-tech/NudeNet/releases/download/v0/classifier_model.onnx"
+        #home = os.path.expanduser("~")
+        #model_folder = os.path.join(home, ".NudeNet/")
+        #if not os.path.exists(model_folder):
+        #    os.mkdir(model_folder)
 
-        model_path = os.path.join(model_folder, os.path.basename(url))
+        #model_path = os.path.join(model_folder, os.path.basename(url))
 
-        if not os.path.exists(model_path):
-            print("Downloading the checkpoint to", model_path)
-            pydload.dload(url, save_to_path=model_path, max_time=None)
+        #if not os.path.exists(model_path):
+        #    print("Downloading the checkpoint to", model_path)
+        #    pydload.dload(url, save_to_path=model_path, max_time=None)
 
-        self.nsfw_model = onnxruntime.InferenceSession(model_path)
+        self.nsfw_model = onnxruntime.InferenceSession(os.path.join(model_dir, 'classifier_model.onnx'))
 
     def classify_video(
         self,
