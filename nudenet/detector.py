@@ -30,32 +30,15 @@ class Detector:
     detection_model = None
     classes = None
 
-    def __init__(self, model_name="default"):
+    def __init__(self, model_dir, model_name="default"):
         """
         model = Detector()
         """
-        checkpoint_url = FILE_URLS[model_name]["checkpoint"]
-        classes_url = FILE_URLS[model_name]["classes"]
 
-        home = os.path.expanduser("~")
-        model_folder = os.path.join(home, f".NudeNet/")
-        if not os.path.exists(model_folder):
-            os.makedirs(model_folder)
-
-        checkpoint_name = os.path.basename(checkpoint_url)
-        checkpoint_path = os.path.join(model_folder, checkpoint_name)
-        classes_path = os.path.join(model_folder, "classes")
-
-        if not os.path.exists(checkpoint_path):
-            print("Downloading the checkpoint to", checkpoint_path)
-            pydload.dload(checkpoint_url, save_to_path=checkpoint_path, max_time=None)
-
-        if not os.path.exists(classes_path):
-            print("Downloading the classes list to", classes_path)
-            pydload.dload(classes_url, save_to_path=classes_path, max_time=None)
+        checkpoint_path = os.path.join(model_dir, 'detector_v2_default_checkpoint.onnx')
+        classes_path = os.path.join(model_dir, "detector_v2_default_classes")
 
         self.detection_model = onnxruntime.InferenceSession(checkpoint_path)
-
         self.classes = [c.strip() for c in open(classes_path).readlines() if c.strip()]
 
     def detect_video(
