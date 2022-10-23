@@ -100,6 +100,8 @@ class Classifier:
         batch_size=4,
         image_size=(256, 256),
         categories=["unsafe", "safe"],
+        loaded_images = None,
+        loaded_image_paths = None
     ):
         """
         inputs:
@@ -111,9 +113,10 @@ class Classifier:
         if not isinstance(image_paths, list):
             image_paths = [image_paths]
 
-        loaded_images, loaded_image_paths = load_images(
-            image_paths, image_size, image_names=image_paths
-        )
+        if loaded_images is None:
+            loaded_images, loaded_image_paths = load_images(
+                image_paths, image_size, image_names=image_paths
+            )
 
         if not loaded_image_paths:
             return {}
